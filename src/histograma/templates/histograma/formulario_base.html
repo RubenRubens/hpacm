@@ -1,0 +1,45 @@
+{% extends 'histograma/base_comun.html' %}
+
+{% block contenido %}
+
+<div class="formulario">
+	<h1>h.p.a.c.m.</h1>
+	<h2>Histograma de la PAC por Municipios</h2>
+	
+	<form action="/hpacm/" method="POST">
+		{% csrf_token %}
+		<fieldset>
+			<label>Municipio</label>
+			<input name="municipio" type="text" placeholder="Cascante">
+		</fieldset>
+		<fieldset>
+			<label>Año</label>
+			<select name="año" required>
+				<option>2017</option>
+				<option>2018</option>
+			</select>
+		</fieldset>
+		<fieldset>
+			<label>Per capita</label>
+			<input type="checkbox" name="per_capita" placeholder="Cascante" checked>
+		</fieldset>
+		<fieldset>
+			<label>Tamaño del contenedor [€]</label>
+			<input name="tamaño_contenedor" type="number" min="100" max="2000" value="1000" step="100">
+		</fieldset>
+		<fieldset>
+			<label>Cuantiles [%]</label>
+			<input name="cuantil_inferior" type="number" min="0" max="30" value="0">
+			<input name="cuantil_superior" type="number" min="70" max="100" value="95">
+		</fieldset>
+		<fieldset>
+			<input type="submit" value="Crear histograma">
+		</fieldset>
+	</form>
+</div>
+
+<div class="resultado">
+	{% block resultado %}{% endblock %}
+</div>
+
+{% endblock %}

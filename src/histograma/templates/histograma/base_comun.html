@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>h.p.a.c.m.</title>
+	<link rel='stylesheet' type='text/css' media='screen' href={% static 'histograma/style.css' %}>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans">
+</head>
+<body>
+
+	<div class="contenido">
+		{% block contenido %}{% endblock %}
+	</div>
+
+	<footer>
+		<div>
+			<div class="footer_element"><a href="">Municipios mas consultados</a></div>
+			<div class="footer_element"><a href="">GitHub</a></div>
+			<div class="footer_element"><a href="">Sobre esta página</a></div>
+			<div class="footer_element"><strong>Rubén Arriazu | </strong> MIT License</div>
+		</div>
+	</footer>
+
+</body>
+</html>

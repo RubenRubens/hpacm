@@ -1,0 +1,5 @@
+*.txt
+*.pyc
+db.sqlite3
+postgres_psswd
+postgres_user
