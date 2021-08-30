@@ -18,7 +18,4 @@ from django.urls import path, include
 
 from histograma.urls import histograma_urls
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(histograma_urls))
-]
+urlpatterns = [path("admin/", admin.site.urls), path("", include(histograma_urls))]

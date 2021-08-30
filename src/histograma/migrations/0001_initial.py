@@ -9,29 +9,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Municipio',
+            name="Municipio",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('municipio', models.CharField(max_length=100)),
-                ('numero_consultas', models.IntegerField(default=0)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("municipio", models.CharField(max_length=100)),
+                ("numero_consultas", models.IntegerField(default=0)),
             ],
         ),
         migrations.CreateModel(
-            name='Histograma',
+            name="Histograma",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('año', models.IntegerField()),
-                ('per_capita', models.BooleanField()),
-                ('cuantil_inferior', models.IntegerField(default=0, validators=[histograma.models.valida_cuantil_inferior])),
-                ('cuantil_superior', models.IntegerField(default=95, validators=[histograma.models.valida_cuantil_superior])),
-                ('tamaño_contenedor', models.IntegerField(default=95, validators=[histograma.models.valida_tamaño_contenedor])),
-                ('svg_histograma', models.TextField()),
-                ('municipio', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='histograma.municipio')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("año", models.IntegerField()),
+                ("per_capita", models.BooleanField()),
+                ("cuantil_inferior", models.IntegerField(default=0, validators=[histograma.models.valida_cuantil_inferior])),
+                ("cuantil_superior", models.IntegerField(default=95, validators=[histograma.models.valida_cuantil_superior])),
+                ("tamaño_contenedor", models.IntegerField(default=95, validators=[histograma.models.valida_tamaño_contenedor])),
+                ("svg_histograma", models.TextField()),
+                ("municipio", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="histograma.municipio")),
             ],
         ),
     ]
