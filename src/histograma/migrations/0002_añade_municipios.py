@@ -10,7 +10,7 @@ def datos_iniciales():
     '''
     
     # Lectura de CSV de la PAC del año 2017
-    pac = pd.read_csv('genera_histograma/datos/Beneficiarios_municipio_ejercicio_2017.txt',
+    pac = pd.read_csv('/datos/pac/Beneficiarios_municipio_ejercicio_2017.txt',
         header=0, delimiter=';', encoding='cp1252', decimal=',',
     )
 

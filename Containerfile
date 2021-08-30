@@ -6,3 +6,6 @@ RUN pip install -r requirements.txt
 # Añade los credenciales de la base de datos
 ADD postgres_user .
 ADD postgres_psswd .
+
+# Añade los ficheros CSV
+ADD datos/pac /datos/pac
