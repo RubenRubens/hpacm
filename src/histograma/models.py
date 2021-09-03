@@ -53,5 +53,5 @@ class Histograma(models.Model):
     per_capita = models.BooleanField()
     cuantil_inferior = models.IntegerField(default=0, validators=[valida_cuantil_inferior])
     cuantil_superior = models.IntegerField(default=95, validators=[valida_cuantil_superior])
-    tamaño_contenedor = models.IntegerField(default=95, validators=[valida_tamaño_contenedor])
+    tamaño_contenedor = models.IntegerField(default=1000, validators=[valida_tamaño_contenedor])
     svg_histograma = models.TextField()
