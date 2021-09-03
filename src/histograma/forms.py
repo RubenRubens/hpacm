@@ -10,11 +10,23 @@ class FormularioHPACM(forms.ModelForm):
         exclude = ["svg_histograma", "municipio"]
 
     municipio = forms.CharField(max_length=100)
+    
+    def lista_nombres_municipios(self):
+        mun = self.cleaned_data["municipio"]
+        return Municipio.objects.filter(municipio__contains=mun).only("municipio")
+    
+    def lista_nombres_municipios_similares(self):
+        import difflib
+        if len(self.lista_nombres_municipios()):
+            mun = self.cleaned_data["municipio"]
+            municipios = Municipio.objects.only("municipio")
+            similar = difflib.get_close_matches(mun, [i.municipio for i in municipios], n=4)
+            return similar
+        else:
+            raise ValueError('Existen municipios con ese nombre')
 
     def nombre_municipio(self):
-        mun = self.cleaned_data["municipio"]
-        mun = Municipio.objects.filter(municipio__contains=mun).only("municipio")
-        return mun[0].municipio
+        return self.lista_nombres_municipios()[0].municipio
 
     def id_municipio(self):
         mun = self.cleaned_data["municipio"]
