@@ -12,8 +12,16 @@ class FormularioHPACM(forms.ModelForm):
     municipio = forms.CharField(max_length=100)
     
     def lista_nombres_municipios(self):
+        """
+        Devuelve una lista con el nombre de todos los municipios que contienen en
+        su nombre el texto buscado.
+
+        El formulario tiene que ser validado antes de utilizar este
+        metodo.
+        """
         mun = self.cleaned_data["municipio"]
-        return Municipio.objects.filter(municipio__contains=mun).only("municipio")
+        municipios = Municipio.objects.filter(municipio__contains=mun).only("municipio")
+        return [m.municipio for m in municipios]
     
     def lista_nombres_municipios_similares(self):
         import difflib
