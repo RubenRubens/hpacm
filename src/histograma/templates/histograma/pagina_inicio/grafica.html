@@ -1,0 +1,34 @@
+{% extends 'histograma/pagina_inicio/formulario_base.html' %}
+
+{% block resultado %}
+
+<img src="http://127.0.0.1:8001/svg/{{ histograma_id }}">
+
+<table>
+	<tr>
+		<td>Municipio</td>
+		<td>{{ municipio }}</td>
+	</tr>
+	<tr>
+		<td>Año</td>
+		<td>{{ formulario.año }}</td>
+	</tr>
+	<tr>
+		<td>Per capita</td>
+		<td>{{ formulario.per_capita }}</td>
+	</tr>
+	<tr>
+		<td>Tamaño cont.</td>
+		<td>{{ formulario.tamaño_contenedor }} €</td>
+	</tr>
+	<tr>
+		<td>Cuantil inf.</td>
+		<td>{{ formulario.cuantil_inferior }} %</td>
+	</tr>
+	<tr>
+		<td>Cuantil sup.</td>
+		<td>{{ formulario.cuantil_superior }} %</td>
+	</tr>
+</table>
+
+{% endblock %}

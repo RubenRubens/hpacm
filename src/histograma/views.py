@@ -1,5 +1,6 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 
 import histograma
 from .forms import FormularioHPACM
@@ -10,29 +11,62 @@ def pagina_inicio(request):
     if request.method == "POST":
         formulario = FormularioHPACM(request.POST)
         if formulario.is_valid():
-            # Comprueba si ya se ha realizado en otra ocasion la misma consulta
-            try:
-                cache = Histograma.objects.get(
-                    municipio__id=formulario.id_municipio(),
-                    año=formulario.cleaned_data["año"],
-                    per_capita=formulario.cleaned_data["per_capita"],
-                    tamaño_contenedor=formulario.cleaned_data["tamaño_contenedor"],
-                    cuantil_inferior=formulario.cleaned_data["cuantil_inferior"],
-                    cuantil_superior=formulario.cleaned_data["cuantil_superior"],
+
+            # Comprueba que el municipio buscado es inequivoco (solo hay uno)
+            nombres_municipios = formulario.lista_nombres_municipios()
+            if len(nombres_municipios) == 1:
+
+                # Comprueba si ya se ha realizado en otra ocasion la misma consulta
+                try:
+                    cache = Histograma.objects.get(
+                        municipio__id=formulario.id_municipio(),
+                        año=formulario.cleaned_data["año"],
+                        per_capita=formulario.cleaned_data["per_capita"],
+                        tamaño_contenedor=formulario.cleaned_data["tamaño_contenedor"],
+                        cuantil_inferior=formulario.cleaned_data["cuantil_inferior"],
+                        cuantil_superior=formulario.cleaned_data["cuantil_superior"],
+                    )
+                    histograma_id = cache.id
+
+                # Si no esta en el cache (en la BBDD) entonces crea un nuevo registro
+                except ObjectDoesNotExist:
+                    nuevo_registro = formulario.save()
+                    histograma_id = nuevo_registro.id
+
+                return render(
+                    request,
+                    "histograma/pagina_inicio/grafica.html",
+                    {
+                        "histograma_id": histograma_id,
+                        "municipio": formulario.nombre_municipio(),
+                        "formulario": formulario.cleaned_data
+                    }
                 )
-                histograma_id = cache.id
+            
+            # Comprueba si hay varios municipios que contienen el nombre buscado
+            elif nombres_municipios:
+                return render(
+                    request,
+                    "histograma/pagina_inicio/lista_municipios.html",
+                    {"municipios": nombres_municipios}
+                )
+            
+            # Comprueba si hay municipios con un nombre similar
+            elif formulario.lista_nombres_municipios_similares():
+                return render(
+                    request,
+                    "histograma/pagina_inicio/municipios_similares.html",
+                    {"municipios_similares": formulario.lista_nombres_municipios_similares()}
+                )
+            
+            # Si todo lo anterior falla, no se encuentra ningun municipio (ni ninguno parecido)
+            return render(request, "histograma/pagina_inicio/no_se_encuentra_municipio.html")
 
-            # Si no esta en el cache (en la BBDD) entonces crea un nuevo registro
-            except:
-                nuevo_registro = formulario.save()
-                histograma_id = nuevo_registro.id
-
-            # TODO: Añadir parametros del formulario
-            return render(request, "histograma/formulario_y_grafica.html", {"histograma_id": histograma_id, "formulario": formulario.cleaned_data})
+        # Informa de los errores del formulario en caso de que no sea valido
         return HttpResponse(f"Formulario no valido. Errores del formulario: {formulario.errors}")
 
     elif request.method == "GET":
-        return render(request, "histograma/solo_formulario.html")
+        return render(request, "histograma/pagina_inicio/solo_formulario.html")
 
     return HttpResponse("Solo son aceptados los metodos http GET y POST.")
 
