@@ -2,9 +2,11 @@
 
 {% block contenido %}
 
+<div class="contenido">
+
 <div class="formulario">
 	<h1>h.p.a.c.m.</h1>
-	<h2>Histograma de la PAC por Municipios</h2>
+	<h2>Histogramas de la Política Agrícola Común por Municipios</h2>
 	
 	<form action="/hpacm/" method="POST">
 		{% csrf_token %}
@@ -40,6 +42,8 @@
 
 <div class="resultado">
 	{% block resultado %}{% endblock %}
+</div>
+
 </div>
 
 {% endblock %}

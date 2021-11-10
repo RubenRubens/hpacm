@@ -74,3 +74,7 @@ def pagina_inicio(request):
 def svg(request, histograma_id):
     documento_svg = Histograma.objects.get(id=histograma_id)
     return HttpResponse(documento_svg.svg_histograma, content_type="image/svg+xml")
+
+
+def about(request):
+    return render(request, "histograma/about.html")
