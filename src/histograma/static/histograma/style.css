@@ -1,7 +1,3 @@
-:root {
-	--altura: 400px
-}
-
 body {
 	font-family: 'IBM Plex Sans';
 	background-color: black;
@@ -100,9 +96,8 @@ h2 {
 }
 
 .resultado p {
-	font-size: small;
+	font-size: medium;
 	text-align: center;
-	line-height: var(--altura);
 }
 
 .resultado table {
