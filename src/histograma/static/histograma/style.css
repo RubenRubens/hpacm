@@ -103,6 +103,8 @@ h2 {
 .resultado table {
 	font-size: small;
 	border: 2px solid rgb(80, 80, 80);
+	margin-left: auto;
+	margin-right: auto;
 }
 
 td:first-child {
