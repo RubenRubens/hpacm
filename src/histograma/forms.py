@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Histograma, Municipio
-from genera_histograma import analisis
+from . import analisis_datos
 
 
 class FormularioHPACM(forms.ModelForm):
@@ -48,7 +48,7 @@ class FormularioHPACM(forms.ModelForm):
         return mun[0].id
 
     def save(self):
-        histograma = analisis.histograma(
+        histograma = analisis_datos.histograma(
             municipio=self.nombre_municipio(),
             año=self.cleaned_data["año"],
             per_capita=self.cleaned_data["per_capita"],
