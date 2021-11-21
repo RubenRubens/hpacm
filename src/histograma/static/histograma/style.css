@@ -156,6 +156,7 @@ footer div {
 
 /* About */
 .about h1 {
+	color: silver;
 	margin-top: 5%;
 	font-size: xx-large;
 	font-family: 'IBM Plex Mono';
@@ -164,7 +165,7 @@ footer div {
 }
 
 .about h2 {
-	color: white;
+	color: silver;
 	font-size: small;
 	font-style: italic;
 	font-weight: normal;
@@ -190,4 +191,45 @@ footer div {
 	color: black;
 	text-decoration: none;
 	font-weight: bold;
+}
+
+/* Municipios mas consultados */
+.mas_consultados {
+	margin-right: 30%;
+	margin-left: 30%;
+}
+.mas_consultados h1 {
+	color: silver;
+	margin-top: 5%;
+	font-size: xx-large;
+	font-family: 'IBM Plex Mono';
+	margin-bottom: 0;
+}
+
+.mas_consultados h2 {
+	color: silver;
+	font-size: small;
+	font-style: italic;
+	font-weight: normal;
+	margin-top: 3px;
+	margin-bottom: 30px;
+}
+
+.mas_consultados h3 {
+	font-size: 200%;
+}
+
+.mas_consultados table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.mas_consultados th {
+	font-family: 'IBM Plex Mono';
+	border-bottom: solid 3px red;
+}
+
+.mas_consultados tr:nth-child(even) {
+	background-color: rgb(20, 20, 20);
 }

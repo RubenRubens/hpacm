@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import histograma
 from .forms import FormularioHPACM
 from .models import Histograma, Municipio
+from .services import ranking_mas_consultados
 
 
 def pagina_inicio(request):
@@ -15,6 +16,11 @@ def pagina_inicio(request):
             # Comprueba que el municipio buscado es inequivoco (solo hay uno)
             nombres_municipios = formulario.lista_nombres_municipios()
             if len(nombres_municipios) == 1:
+
+                # Añade una visita al municipio
+                municipio = Municipio.objects.get(municipio__contains=formulario.nombre_municipio())
+                municipio.numero_consultas += 1
+                municipio.save()
 
                 # Comprueba si ya se ha realizado en otra ocasion la misma consulta
                 try:
@@ -78,3 +84,8 @@ def svg(request, histograma_id):
 
 def about(request):
     return render(request, "histograma/about.html")
+
+
+def municipios_mas_consultados(request):
+    top = ranking_mas_consultados(10)
+    return render(request, "histograma/municipios_mas_consultados.html", {"top": top})

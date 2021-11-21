@@ -1,0 +1,28 @@
+{% extends 'histograma/base_comun.html' %}
+
+{% block contenido %}
+
+<div class="mas_consultados">
+	
+	<h1>h.p.a.c.m.</h1>
+	<h2>Histogramas de la Política Agrícola Común por Municipios</h2>
+
+	<h3>Municipios mas consultados</h3>
+
+	<table>
+		<tr>
+			<th>Posición</th>
+			<th>Municipio</th>
+			<th>Consultas</th>
+		</tr>
+		{% for municipio, num_consultas in top %}
+		<tr>
+			<td>{{ forloop.counter }}</td>
+			<td>{{ municipio }}</td>
+			<td>{{ num_consultas }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+
+</div>
+{% endblock %}
