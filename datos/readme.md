@@ -1,5 +1,3 @@
-Inserta en la carpeta ./pac los CSV de la Política Agrícola Común
-
 En la carpeta `./poblacion` se encuentra un archivo que se ha generado
 utilizando un shell script.
 
