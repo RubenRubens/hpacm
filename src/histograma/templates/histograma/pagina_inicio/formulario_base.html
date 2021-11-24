@@ -11,13 +11,11 @@
 	<form action="/hpacm/" method="POST">
 		{% csrf_token %}
 		<fieldset>
-			<label for="{{ form.municipio.id_for_label }}">Municipio</label>
+			<label>Municipio</label>
 			<input name="municipio" type="text" placeholder="Cascante">
 		</fieldset>
 		<fieldset>
-			{{ form.año.errors }}
-			<label for="{{ form.año.id_for_label }}">Año</label>
-			{{ form.año }}
+			<label>Año</label>
 			<select name="año" required>
 				<option>2017</option>
 				<option>2018</option>
