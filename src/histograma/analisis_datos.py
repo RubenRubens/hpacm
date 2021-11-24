@@ -61,10 +61,10 @@ def genera_grafica_absoluta(pagos, tamaño_contenedor: int) -> str:
     # Crea una lista (contenedor) con valores empezando por el cero y
     # acaba por el maximo de pagos, en intervalos del tamaño del contenedor.
     valor_max = max(pagos)
-    contenedor = range(0, int(valor_max + valor_max % tamaño_contenedor), tamaño_contenedor)
+    num_bins = int(valor_max / tamaño_contenedor) + 1
 
     # Crea titulos para la grafica
-    plt.hist(pagos, bins=contenedor, color="#FAEBD7")  # This color is called antiquewhite
+    plt.hist(pagos, bins=num_bins, color="#FAEBD7")
     plt.xlabel("€")
     plt.ylabel("Numero de agricultores")
 
@@ -87,10 +87,10 @@ def genera_grafica_per_capita(pagos, tamaño_contenedor: int, municipio: str, a�
     # Crea una lista (contenedor) con valores empezando por el cero y
     # acaba por el maximo de pagos, en intervalos del tamaño del contenedor.
     valor_max = max(pagos)
-    contenedor = range(0, int(valor_max + valor_max % tamaño_contenedor), tamaño_contenedor)
+    num_bins = int(valor_max / tamaño_contenedor) + 1
 
     # Normaliza los datos del histograma
-    counts, bins = numpy.histogram(pagos)
+    counts, bins = numpy.histogram(pagos, bins=num_bins)
     poblacion = numero_habitantes(municipio, año)
     counts = [HABITANTES * i / poblacion for i in counts]
 
