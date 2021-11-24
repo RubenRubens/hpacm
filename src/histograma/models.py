@@ -1,30 +1,5 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-
-
-def valida_cuantil_inferior(cuantil_inf):
-    if cuantil_inf < 0:
-        raise ValidationError("El cuantil inferior debe de ser igual o mayor a 0")
-    maximo = 80
-    if cuantil_inf > maximo:
-        raise ValidationError(f"El cuantil inferior introducido no puede ser mayor a {maximo}")
-
-
-def valida_cuantil_superior(cuantil_sup):
-    if cuantil_sup > 100:
-        raise ValidationError("El cuantil superior debe de ser igual o menor a 100")
-    minimo = 20
-    if cuantil_sup < minimo:
-        raise ValidationError(f"El cuantil superior introducido no puede ser menor a {minimo}")
-
-
-def valida_tamaño_contenedor(tamaño):
-    minimo = 100
-    maximo = 2000
-    if tamaño < minimo:
-        raise ValidationError(f"El tamaño del contenedor tiene que ser mayor o igual a {minimo}")
-    elif tamaño > maximo:
-        raise ValidationError(f"El tamaño del contenedor tiene que ser menor o igual a {maximo}")
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Municipio(models.Model):
@@ -45,13 +20,13 @@ class Histograma(models.Model):
     Cache que guarda los histogramas de matplotlib.
 
     matplotlib guarda en memoria los archivos SVG y luego son
-    guardados en la base de datos como text plano.
+    guardados en la base de datos como texto plano.
     """
 
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
-    año = models.IntegerField()
+    año = models.IntegerField(validators=[MinValueValidator(2017), MaxValueValidator(2020)])
     per_capita = models.BooleanField()
-    cuantil_inferior = models.IntegerField(default=0, validators=[valida_cuantil_inferior])
-    cuantil_superior = models.IntegerField(default=95, validators=[valida_cuantil_superior])
-    tamaño_contenedor = models.IntegerField(default=1000, validators=[valida_tamaño_contenedor])
+    cuantil_inferior = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(30)])
+    cuantil_superior = models.IntegerField(default=95, validators=[MinValueValidator(70), MaxValueValidator(100)])
+    tamaño_contenedor = models.IntegerField(default=1000, validators=[MinValueValidator(100), MaxValueValidator(5000)])
     svg_histograma = models.TextField()

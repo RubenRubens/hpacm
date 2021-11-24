@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+from django.core.validators import MaxValueValidator, MinValueValidator
 import histograma.models
 
 
@@ -26,9 +27,9 @@ class Migration(migrations.Migration):
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("año", models.IntegerField()),
                 ("per_capita", models.BooleanField()),
-                ("cuantil_inferior", models.IntegerField(default=0, validators=[histograma.models.valida_cuantil_inferior])),
-                ("cuantil_superior", models.IntegerField(default=95, validators=[histograma.models.valida_cuantil_superior])),
-                ("tamaño_contenedor", models.IntegerField(default=95, validators=[histograma.models.valida_tamaño_contenedor])),
+                ("cuantil_inferior", models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(30)])),
+                ("cuantil_superior", models.IntegerField(default=95, validators=[MinValueValidator(70), MaxValueValidator(100)])),
+                ("tamaño_contenedor", models.IntegerField(default=95, validators=[MinValueValidator(100), MaxValueValidator(5000)])),
                 ("svg_histograma", models.TextField()),
                 ("municipio", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="histograma.municipio")),
             ],

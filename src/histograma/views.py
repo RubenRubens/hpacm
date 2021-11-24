@@ -72,7 +72,7 @@ def pagina_inicio(request):
         return HttpResponse(f"Formulario no valido. Errores del formulario: {formulario.errors}")
 
     elif request.method == "GET":
-        return render(request, "histograma/pagina_inicio/solo_formulario.html")
+        return render(request, "histograma/pagina_inicio/solo_formulario.html", {"form": FormularioHPACM()})
 
     return HttpResponse("Solo son aceptados los metodos http GET y POST.")
 
