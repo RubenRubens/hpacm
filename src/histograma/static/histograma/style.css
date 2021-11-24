@@ -193,6 +193,7 @@ footer div {
 	font-weight: bold;
 }
 
+
 /* Municipios mas consultados */
 .mas_consultados {
 	margin-right: 30%;
@@ -232,4 +233,17 @@ footer div {
 
 .mas_consultados tr:nth-child(even) {
 	background-color: rgb(20, 20, 20);
+}
+
+
+/* Hipervinculo logo */
+.logo a {
+	color: silver;
+	text-decoration: none;
+}
+
+.logo a:hover {
+	color: silver;
+	background-color: black;
+	text-decoration: none;
 }

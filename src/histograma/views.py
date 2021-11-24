@@ -50,7 +50,10 @@ def pagina_inicio(request):
                 return render(
                     request,
                     "histograma/pagina_inicio/lista_municipios.html",
-                    {"municipios": formulario.lista_nombres_municipios()}
+                    {
+                        "municipios": formulario.lista_nombres_municipios(),
+                        "formulario": formulario.cleaned_data
+                    }
                 )
             
             # Comprueba si hay municipios con un nombre similar
@@ -58,7 +61,10 @@ def pagina_inicio(request):
                 return render(
                     request,
                     "histograma/pagina_inicio/municipios_similares.html",
-                    {"municipios_similares": formulario.lista_nombres_municipios_similares()}
+                    {
+                        "municipios_similares": formulario.lista_nombres_municipios_similares(),
+                        "formulario": formulario.cleaned_data
+                    }
                 )
             
             # Si todo lo anterior falla, no se encuentra ningun municipio (ni ninguno parecido)
