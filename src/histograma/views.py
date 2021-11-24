@@ -14,13 +14,9 @@ def pagina_inicio(request):
         if formulario.is_valid():
 
             # Comprueba que el municipio buscado es inequivoco (solo hay uno)
-            nombres_municipios = formulario.lista_nombres_municipios()
-            if len(nombres_municipios) == 1:
+            if formulario.busca_municipio():
 
-                # Añade una visita al municipio
-                municipio = Municipio.objects.get(municipio__contains=formulario.nombre_municipio())
-                municipio.numero_consultas += 1
-                municipio.save()
+                formulario.incrementa_visitas()
 
                 # Comprueba si ya se ha realizado en otra ocasion la misma consulta
                 try:
@@ -50,11 +46,11 @@ def pagina_inicio(request):
                 )
             
             # Comprueba si hay varios municipios que contienen el nombre buscado
-            elif nombres_municipios:
+            elif formulario.lista_nombres_municipios():
                 return render(
                     request,
                     "histograma/pagina_inicio/lista_municipios.html",
-                    {"municipios": nombres_municipios}
+                    {"municipios": formulario.lista_nombres_municipios()}
                 )
             
             # Comprueba si hay municipios con un nombre similar

@@ -5,24 +5,43 @@ from . import analisis_datos
 
 
 class FormularioHPACM(forms.ModelForm):
-    
+
+    municipios_criterio_busqueda = None
+    municipio = None
+
     class Meta:
         model = Histograma
         exclude = ["svg_histograma", "municipio"]
 
-    municipio = forms.CharField(max_length=100)
+    municipio_buscado = forms.CharField(max_length=100)
+
+    def busca_municipio(self):
+        m_buscado = self.cleaned_data["municipio_buscado"]
+        
+        # Comprueba si la lista de municipios buscado con ese criterio es unica
+        self.municipios_criterio_busqueda = Municipio.objects.filter(municipio__icontains=m_buscado)
+        if len(self.municipios_criterio_busqueda) == 1:
+            self.municipio = self.municipios_criterio_busqueda[0]
+            return True
+        
+        # Si hay varios municipios que contienen el texto busca si alguno coincide
+        # de manera exacta
+        for m in self.municipios_criterio_busqueda:
+            if m.municipio.lower() == m_buscado.lower():
+                self.municipio = m
+                return True
+        
+        return False
     
+    def incrementa_visitas(self):
+        self.municipio.numero_consultas += 1
+        self.municipio.save()
+
     def lista_nombres_municipios(self):
         """
-        Devuelve una lista con el nombre de todos los municipios que contienen en
-        su nombre el texto buscado. Se pueden utilizar caracteres en mayuscula o
-        minuscula.
-        
-        Ejemplo: 'bilbao' -> 'Bilbao'
+        Devuelve una lista con los nombres que cumplen el criterio de busqueda.
         """
-        mun = self.cleaned_data["municipio"]
-        municipios = Municipio.objects.filter(municipio__icontains=mun).only("municipio")
-        return [m.municipio for m in municipios]
+        return [m.municipio for m in self.municipios_criterio_busqueda]
     
     def lista_nombres_municipios_similares(self):
         """
@@ -31,8 +50,8 @@ class FormularioHPACM(forms.ModelForm):
         Ejemplo: 'Brcelona' -> ['Barcelona']
         """
         import difflib
-        if len(self.lista_nombres_municipios()) == 0:
-            mun = self.cleaned_data["municipio"]
+        if len(self.municipios_criterio_busqueda) == 0:
+            mun = self.cleaned_data["municipio_buscado"]
             municipios = Municipio.objects.only("municipio")
             similar = difflib.get_close_matches(mun, [i.municipio for i in municipios], n=3, cutoff=0.8)
             return similar
@@ -40,12 +59,10 @@ class FormularioHPACM(forms.ModelForm):
             raise ValueError('Existen municipios con ese nombre')
 
     def nombre_municipio(self):
-        return self.lista_nombres_municipios()[0]
+        return self.municipio.municipio
 
     def id_municipio(self):
-        mun = self.cleaned_data["municipio"]
-        mun = Municipio.objects.filter(municipio__icontains=mun).only("id")
-        return mun[0].id
+        return self.municipio.id
 
     def save(self):
         histograma = analisis_datos.histograma(
@@ -54,7 +71,7 @@ class FormularioHPACM(forms.ModelForm):
             per_capita=self.cleaned_data["per_capita"],
             cuantil_inf=self.cleaned_data["cuantil_inferior"],
             cuantil_sup=self.cleaned_data["cuantil_superior"],
-            tamaño_contenedor=self.cleaned_data["tamaño_contenedor"],
+            tamaño_contenedor=self.cleaned_data["tamaño_contenedor"]
         )
         return Histograma.objects.create(
             municipio_id=self.id_municipio(),
@@ -63,5 +80,5 @@ class FormularioHPACM(forms.ModelForm):
             cuantil_inferior=self.cleaned_data["cuantil_inferior"],
             cuantil_superior=self.cleaned_data["cuantil_superior"],
             tamaño_contenedor=self.cleaned_data["tamaño_contenedor"],
-            svg_histograma=histograma,
+            svg_histograma=histograma
         )
