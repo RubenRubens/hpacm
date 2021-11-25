@@ -8,4 +8,4 @@ ADD postgres_user .
 ADD postgres_psswd .
 
 # Añade los ficheros CSV
-ADD datos/pac /datos/pac
+ADD datos /datos
